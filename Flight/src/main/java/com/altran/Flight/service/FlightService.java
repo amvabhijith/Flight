@@ -31,7 +31,6 @@ public class FlightService{
 	public Flights getFlightByDepartureTime(String departureTime) throws ParseException {
 		Date departureTimeStart = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(departureTime+" 00:00:00"); 
 		Date departureTimeEnd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(departureTime+" 23:59:59"); 
-		System.out.println(departureTimeStart+">>>"+departureTimeEnd);
 		List<Flight> flightsList = flightRepo.findByDepartureTimeBetween(departureTimeStart,departureTimeEnd);
 		List<Flight> resultFlightsList = new ArrayList<Flight>();
 		flightsList.parallelStream().forEach(k -> 
@@ -41,7 +40,7 @@ public class FlightService{
 									}
 									resultFlightsList.add(k);
 								});
-		Flights flights = new Flights(flightsList);
+		Flights flights = new Flights(resultFlightsList);
 		return flights;
 	}
 
