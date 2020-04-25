@@ -1,11 +1,13 @@
 package com.altran.Flight.controller;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,10 +28,10 @@ public class FlightController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(FlightController.class);
 	
-	@GetMapping
+/*	@GetMapping
 	public @ResponseBody List<Flight> getAllFlights() {
 		return flightService.getAllFlights();
-	}
+	}*/
 	
 	/*
 	 * @GetMapping("/{flight-id}") public @ResponseBody Flight
@@ -38,7 +40,7 @@ public class FlightController {
 	 */
 	
 	@GetMapping("/{departureTime}")
-	public @ResponseBody Flights getFlightByDepartureTime(@PathVariable("departureTime") String departureTime) {
+	public @ResponseBody Flights getFlightByDepartureTime(@PathVariable("departureTime")@DateTimeFormat(iso= DateTimeFormat.ISO.DATE) Date departureTime) {
 		Flights flights;
 		try {
 			flights = flightService.getFlightByDepartureTime(departureTime);

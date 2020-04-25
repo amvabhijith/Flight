@@ -12,7 +12,7 @@ public class Flights {
 	}
 
 	public Flights() {
-		// TODO Auto-generated constructor stub
+		flights = new ArrayList<Flight>();
 	}
 
 	public List<Flight> getFlights() {

@@ -3,9 +3,11 @@ package com.altran.Flight.service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import net.bytebuddy.implementation.bind.MethodDelegationBinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,17 +22,19 @@ public class FlightService{
 	@Autowired
 	private FlightRepository flightRepo;
 
-	public Flight getFlightById(long flightId) {
-		return flightRepo.findByFlightId(flightId);
-	}
+//	public List<Flight> getAllFlights() {
+//		return flightRepo.findAll();
+//	}
 
-	public List<Flight> getAllFlights() {
-		return flightRepo.findAll();
-	}
-
-	public Flights getFlightByDepartureTime(String departureTime) throws ParseException {
-		Date departureTimeStart = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(departureTime+" 00:00:00"); 
-		Date departureTimeEnd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(departureTime+" 23:59:59"); 
+	public Flights getFlightByDepartureTime(Date departureTime) throws ParseException {
+		Date departureTimeStart = departureTime;
+		Calendar c = Calendar.getInstance();
+		c.setTime(departureTime);
+		c.set(Calendar.HOUR_OF_DAY, 23);
+		c.set(Calendar.MINUTE, 59);
+		c.set(Calendar.SECOND, 59);
+		c.set(Calendar.MILLISECOND, 999);
+		Date departureTimeEnd = c.getTime();
 		List<Flight> flightsList = flightRepo.findByDepartureTimeBetween(departureTimeStart,departureTimeEnd);
 		List<Flight> resultFlightsList = new ArrayList<Flight>();
 		flightsList.parallelStream().forEach(k -> 

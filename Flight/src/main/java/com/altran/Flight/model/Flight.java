@@ -1,6 +1,7 @@
 package com.altran.Flight.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -36,11 +37,11 @@ public class Flight {
     private String to;  
     
     @Column(name = "departure_time")
-    @DateTimeFormat(pattern = "yyyy-MM-dd-HH")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date departureTime;     
     
     @Column(name = "arrival_time")
-    @DateTimeFormat(pattern = "yyyy-MM-dd-HH")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date arrivalTime;
     
     @Column(name = "seats_left")
@@ -55,7 +56,19 @@ public class Flight {
 	public Flight() {
 		super();
 	}
-    
+
+    public Flight(long flightId, Date arrivalTime, Date departureTime, String description, String from, String number, int price, int seatsLeft, String to) {
+		this.flightId = flightId;
+		this.number = number;
+		this.price = price;
+		this.from = from;
+		this.to = to;
+		this.departureTime = departureTime;
+		this.arrivalTime = arrivalTime;
+		this.seatsLeft = seatsLeft;
+		this.description = description;
+    }
+
     public long getFlightId() {
 		return flightId;
 	}
@@ -134,6 +147,18 @@ public class Flight {
 
 	public void setPlane(Plane plane) {
 		this.plane = plane;
-	} 
+	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Flight flight = (Flight) o;
+		return Objects.equals(number, flight.number);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(number);
+	}
 }
